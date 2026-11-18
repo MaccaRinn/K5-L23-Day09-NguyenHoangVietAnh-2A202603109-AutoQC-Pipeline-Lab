@@ -1,4 +1,4 @@
-# Báo cáo Day 09
+# Day 09 Lab — Nguyen Hoang Viet Anh: 2A202603109 - Nguyen Hoang Viet Anh
 
 ## 1. Kết luận trước
 Pipeline nhận 224 ảnh raw, giữ 193 ảnh qua intake và loại 31 ảnh. Mô phỏng người duyệt xem 80/138 ảnh trong hàng đợi; sau duyệt còn 0 lỗi bắt buộc nhưng 53/193 ảnh còn cảnh báo (27.46%), vượt ngưỡng Hold 10%, nên kết luận là **Hold** (mã thoát 10). Dataset được xuất ở `submission/export/clean_v1/` dưới dạng bản nháp, chưa được phát hành.
@@ -35,11 +35,11 @@ Hàng đợi xếp `img_0160` đầu tiên (priority 35.692) vì có nhiều c�
 Điểm có thể đánh lừa: calib chỉ có 39 ảnh và chỉ 5 lỗi BOX lỏng chèn; một lỗi bỏ sót làm recall đổi 0.20. Hơn nữa, phân bố lỗi raw khác calib và calib không có LEAK_TEST, nên không thể xem các số này là hiệu năng chắc chắn trên raw.
 
 ## 4. Cửa chặn và điều pipeline KHÔNG bắt được
-Quan sát ban đầu từ hình đã vẽ nhãn:
-- `img_0001.png`: thiếu box người; pipeline cũng gắn cờ `POSSIBLE_MISSING`.
-- `img_0030.png`: box đặt lệch; pipeline gắn nhiều cảnh báo ngữ nghĩa và `03_fixes.csv` ghi một box đã được cắt.
+Hai giới hạn quan sát được khi mở ảnh raw cùng overlay nhãn bằng `scripts/viz_labels.py`; cả hai ảnh đều không có dòng tương ứng trong `07_error_list_v3.csv`:
+- `img_0048.jpg`: có ít nhất hai người rất nhỏ ở giữa sườn tuyết nhưng không có box person. Checker dựa vào dự đoán model, nên có thể bỏ sót vật nhỏ/xa nếu model không đề xuất chúng.
+- `img_0088.jpg`: ảnh có chó trên ván lướt nhưng không có box. Đây là giới hạn phạm vi, không phải lỗi theo guideline hiện tại: pipeline chỉ kiểm bốn lớp `car/person/truck/bus`, nên không thể phát hiện thiếu nhãn của lớp ngoài taxonomy.
 
-(a) Chạy với `--budget 0`: còn 6 `MISSING_LABEL_FILE`, kết luận **Rework**, mã thoát 20; `work/exp_nb` không được tạo. Hai ảnh quan sát ở trên đều được pipeline gắn cảnh báo, nên đây là các ca được phát hiện chứ không phải điểm mù.
+Chạy với `--budget 0` còn 6 `MISSING_LABEL_FILE`, kết luận **Rework**, mã thoát 20; `work/exp_nb` không được tạo. Đây là kiểm tra ngân sách duyệt riêng, không thay thế hai ví dụ điểm mù ở trên.
 
 ## 5. Train: raw vs clean (tùy chọn, chấm riêng)
 Train Colab chưa chạy tại thời điểm báo cáo; hiện chưa có kết quả mAP để so sánh raw và clean.

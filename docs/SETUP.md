@@ -3,7 +3,7 @@
 | Việc | Lệnh |
 |---|---|
 | Python 3.9–3.13 | `python --version` |
-| Môi trường ảo | `python -m venv .venv` rồi `source .venv/bin/activate` (Windows: `.venv\Scripts\activate`) |
+| Môi trường ảo | `python -m venv .venv` rồi `source .venv/bin/activate` (Windows: `source .venv/bin/activate`) |
 | Thư viện (nhẹ, **không** cần torch/GPU) | `pip install -r requirements.txt` |
 | Kiểm tra | `python -m pytest -q` → lúc đầu **55 failed, 24 passed** (đúng như dự kiến: 5 check đã viết sẵn) |
 
